@@ -6,7 +6,7 @@ declare -a configfiles=("nodemon.json" "tsconfig.json")
 
 BUILD_DATE=$(date +%F)
 
-OUTPUT_FILE='./dist/create-app.sh'
+OUTPUT_FILE='./dist/create/create-app.sh'
 
 function newline() {
   echo "" >> $OUTPUT_FILE
@@ -32,7 +32,7 @@ echo "######################################################" >> $OUTPUT_FILE
 echo "#  CRA2 Create Script                                #" >> $OUTPUT_FILE
 echo "#                                                    #" >> $OUTPUT_FILE
 echo "#    Author: Thomas Kottke <t.kottke90@gmail.com>    #" >> $OUTPUT_FILE
-echo "#    Build Date: $BUILD_DATE                          #" >> $OUTPUT_FILE
+echo "#    Build Date: $BUILD_DATE" >> $OUTPUT_FILE
 echo "######################################################" >> $OUTPUT_FILE
 newline
 
