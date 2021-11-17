@@ -6,7 +6,10 @@ declare -a configfiles=("nodemon.json" "tsconfig.json")
 
 BUILD_DATE=$(date +%F)
 
-OUTPUT_FILE='./dist/create/create-app.sh'
+OUTPUT_DIR='./dist/create'
+OUTPUT_FILENAME='create-app.sh'
+
+OUTPUT_FILE="$OUTPUT_DIR/${OUTPUT_FILENAME}"
 
 function newline() {
   echo "" >> $OUTPUT_FILE
@@ -25,6 +28,8 @@ function createFile() {
   echo "EOF" >> $OUTPUT_FILE
   newline
 }
+
+mkdir -p $OUTPUT_DIR
 
 echo '#! /bin/bash' > $OUTPUT_FILE
 
