@@ -1,7 +1,5 @@
-import { GenericDictionary } from "@classes/dictionary.class";
-import { Inject, Service } from "typedi";
+import { Service } from "typedi";
 import { createLogger, format, Logger, transports, transport } from "winston";
-import EnvironmentService from "./environment.service";
 import lodash from 'lodash';
 
 // Configurable list of levels
@@ -16,23 +14,28 @@ export interface ILoggerConfigurations {
   transports: string[];
 }
 
+interface ClassOptions {
+  silent?: boolean,
+  developmentMode: boolean
+}
+
 @Service()
 export class LoggerClass {
   private logger: Logger;
+  private developmentMode: boolean;
   
   public instanceName: string = 'App';
 
-  constructor(
-    @Inject()
-    private environmentService: EnvironmentService
-  ) {
+  constructor(options: ClassOptions) {
     this.logger = createLogger({
       levels: this.generateLogLevels(Array.from(customList)),
       level: 'setup',
-      silent: this.environmentService.get('NODE_ENV') === 'testing',
+      silent: options.silent || false,
       format: this.generateLogFormat(),
       transports: this.generateTransports()
     });
+
+    this.developmentMode = options.developmentMode;
   }
 
   public createChildLogger(loggerName: string | string[]): ChildLogger {
@@ -98,7 +101,7 @@ export class LoggerClass {
     return format.combine(
       format.timestamp(),
       format.simple(),
-      format.printf((info: GenericDictionary) => {
+      format.printf((info: Record<string, any>) => {
         const customFields = [ 'message', 'timestamp', 'level', 'instance' ];
 
         const { message, timestamp, level, instance } = lodash.pick(info, customFields);
@@ -122,7 +125,7 @@ export class LoggerClass {
   }
 
   private generateTransports() {
-    const isDevelopment = this.environmentService.get('IS_DEVELOPMENT') || false
+    const isDevelopment = !!this.developmentMode
 
     return [
       new transports.Console({ level: isDevelopment ? 'setup' : 'http' })
