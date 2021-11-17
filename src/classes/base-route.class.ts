@@ -92,7 +92,7 @@ export class BaseController implements GenericDictionary {
             const errorCode = context.error.code || 500;
             delete context.error.code;
             
-            throw new RoutingError('Error occurred in after route', errorCode, { class: route.metadata.className, method: route.metadata.methodName, hook: hook._hookIndex });
+            throw new RoutingError('Error occurred in before hook', errorCode, { class: route.metadata.className, method: route.metadata.methodName, hook: hook._hookIndex });
           }
 
           if (context.result) {
@@ -126,7 +126,7 @@ export class BaseController implements GenericDictionary {
             const errorCode = context.error.code || 500;
             delete context.error.code;
 
-            throw new RoutingError('Error occurred in after route', errorCode, { class: route.metadata.className, method: route.metadata.methodName, hook: hook._hookIndex });
+            throw new RoutingError('Error occurred in after hook', errorCode, { class: route.metadata.className, method: route.metadata.methodName, hook: hook._hookIndex });
           }
 
           if (context.result) {
