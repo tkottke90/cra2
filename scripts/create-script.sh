@@ -136,6 +136,12 @@ echo "#  Create Directories  #" >> $OUTPUT_FILE
 echo "########################" >> $OUTPUT_FILE
 newline
 
+print "Creating Directory: docs"
+echo "mkdir -p docs" >> $OUTPUT_FILE
+
+print "Creating Directory: tests"
+echo "mkdir -p tests" >> $OUTPUT_FILE
+
 echo "$mydirs"
 for d in "${mydirs[@]}"
 do
