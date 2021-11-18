@@ -1,13 +1,15 @@
 #! /bin/bash
 
+OUTPUT_DIR="$PWD/dist/create"
+OUTPUT_FILENAME='create-app.sh'
+
+cd createProjectTemplate
+
 readarray -t myfiles < <(find src -type f)
 readarray -t mydirs < <(find src -type d)
 declare -a configfiles=("nodemon.json" "tsconfig.json")
 
 BUILD_DATE=$(date +%F)
-
-OUTPUT_DIR='./dist/create'
-OUTPUT_FILENAME='create-app.sh'
 
 OUTPUT_FILE="$OUTPUT_DIR/${OUTPUT_FILENAME}"
 
