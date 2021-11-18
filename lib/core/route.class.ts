@@ -1,8 +1,4 @@
-import { GenericDictionary } from '@classes/dictionary.class';
-import EnvironmentService from "@services/environment.service";
-import { LoggerClass } from "@services/logger.service";
 import { Application, NextFunction, Request, RequestHandler, Response } from "express";
-import Container from "typedi";
 import { BaseController } from "./base-route.class";
 
 export type TRouteMethods = 'get' | 'post' | 'patch' | 'put' | 'delete' | 'options';
@@ -13,19 +9,19 @@ export interface IContext {
   readonly response: Response;
   readonly next?: NextFunction,
   readonly app: Application;
-  readonly params: GenericDictionary;
-  readonly query: GenericDictionary;
+  readonly params: Record<string, any>;
+  readonly query: Record<string, any>;
   readonly transport: 'http' | 'socket',
   user: any;
   readonly method: string;
-  data?: GenericDictionary;
+  data?: Record<string, any>;
   result?: any;
   error?: any;
 }
 
 export type IHook = (context: IContext) => IContext | Promise<IContext>;
 
-interface RouteMetaData extends GenericDictionary {
+interface RouteMetaData extends Record<string, any> {
   className: string,
   methodName: string,
   parameters: string[];
@@ -52,14 +48,11 @@ export interface IRoute {
   }
 }
 
-function GenerateDecoratorError(message: string, outputLines: string[]) {
-  const env = Container.get(EnvironmentService);
-    const logger = Container.get(LoggerClass);
-  
-  if (env.get('NODE_ENV') === 'development') {
+function GenerateDecoratorError(message: string, outputLines: string[]) {  
+  if (process.env.NODE_ENV === 'development') {
     console.warn(` === Setup Error === \n\n${message}\n\n${outputLines.join('\n')}\n`);
   } else {
-    logger.log('warn', message, { stdoutLines: outputLines });
+    console.warn(message, { stdoutLines: outputLines });
   } 
 }
 

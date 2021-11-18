@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import { RouteDecorator } from "@classes/route-decorators.class";
+import { RouteDecorator } from "../core/route-decorators.class";
 
 type MiddlewareLocation = 'before' | 'after';
 

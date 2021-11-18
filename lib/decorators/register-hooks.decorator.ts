@@ -1,5 +1,5 @@
-import { RouteDecorator } from "@classes/route-decorators.class";
-import { THookTypes, IHook } from "@classes/route.class";
+import { RouteDecorator } from "../core/route-decorators.class";
+import { THookTypes, IHook } from "../core/route.class";
 
 export function Hooks(type: THookTypes, hooks: IHook[]) {
   return RouteDecorator((route, target, propertyKey, descriptor) => {
