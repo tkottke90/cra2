@@ -1,5 +1,5 @@
 import { Application } from 'express';
-import { BaseController } from "@classes/base-route.class";
+import { BaseController } from "cra2/base-route.class";
 import { Container } from 'typedi';
 import { PackageService } from '@services/package.service';
 import { Route } from '@classes/route.class';

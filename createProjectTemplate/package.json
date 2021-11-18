@@ -1,22 +1,16 @@
 {
-  "name": "cra2",
+  "name": "createprojecttemplate",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "create": "bash ./scripts/create-script.sh"
-  },
-  "bin": {
-    "create-cra-app": "./dist/create/create-app.sh"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Thomas Kottke <t.kottke90@gmail.com>",
   "license": "ISC",
-  "directories": {
-    "doc": "docs",
-    "test": "test"
-  },
-  "description": "",
   "dependencies": {
+    "cra2": "file:..",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",

@@ -1,8 +1,6 @@
-import { GenericDictionary } from "@classes/dictionary.class";
-
 export default class BaseError extends Error {
 
-  metadata: GenericDictionary = {};
+  metadata: Record<string, any> = {};
 
   constructor(message: string, name: string) {
     super(message)
@@ -10,7 +8,7 @@ export default class BaseError extends Error {
     this.name = name;
   }
 
-  addMetadata(metadata: GenericDictionary): BaseError {
+  addMetadata(metadata: Record<string, any>): BaseError {
     this.metadata = Object.assign(metadata);
 
     return this;
