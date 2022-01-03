@@ -1,5 +1,5 @@
 import { Application } from 'express';
-import { BaseController } from "cra2/base-route.class";
+import { BaseController } from "../../../lib/core/base-controller.class";
 import { Container } from 'typedi';
 import { PackageService } from '@services/package.service';
 import { Route } from '@classes/route.class';
@@ -7,6 +7,8 @@ import { Route } from '@classes/route.class';
 export class VersionController extends BaseController {
 
   private packageService: PackageService;
+
+  public classLogger: Console
 
   constructor(app: Application) {
     super(app, 'version', 'Controller.VersionController');
@@ -23,6 +25,8 @@ export class VersionController extends BaseController {
   getBuildDate(params: any, data: any) {
     return { buildDate: '2021-09-10' }
   }
+
+  
 
 }
 

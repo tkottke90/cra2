@@ -1,8 +1,6 @@
-import EnvironmentService from "@services/environment.service";
-import { LoggerClass } from "@services/logger.service";
 import { IRoute } from "./route.class";
-import Container from "typedi";
-import { BaseController } from "./base-route.class";
+import { BaseController } from "./base-controller.class";
+import { GenerateDecoratorError } from '../errors/generate-decorator-error.class';
 
 type MethodDecoratorFn = {
   (target: BaseController, propertyKey: string, descriptor: PropertyDescriptor): any
@@ -38,15 +36,4 @@ export function RouteDecorator(callback: DecoratorCallback): MethodDecoratorFn {
 
     return callback(route, target, propertyKey, descriptor);
   }
-}
-
-export function GenerateDecoratorError(message: string, outputLines: string[]) {
-  const env = Container.get(EnvironmentService);
-    const logger = Container.get(LoggerClass);
-  
-  if (env.get('NODE_ENV') === 'development') {
-    console.warn(` === Setup Error === \n\n${message}\n\n${outputLines.join('\n')}\n`);
-  } else {
-    logger.log('warn', message, { stdoutLines: outputLines });
-  } 
 }

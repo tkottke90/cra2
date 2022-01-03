@@ -1,5 +1,6 @@
 import { Application, NextFunction, Request, RequestHandler, Response } from "express";
-import { BaseController } from "./base-route.class";
+import { BaseController } from "./base-controller.class";
+import { GenerateDecoratorError } from '../errors/generate-decorator-error.class';
 
 export type TRouteMethods = 'get' | 'post' | 'patch' | 'put' | 'delete' | 'options';
 export type THookTypes = 'before' | 'after' | 'error';
@@ -46,14 +47,6 @@ export interface IRoute {
     required: boolean;
     verificationFn: (user: any) => boolean
   }
-}
-
-function GenerateDecoratorError(message: string, outputLines: string[]) {  
-  if (process.env.NODE_ENV === 'development') {
-    console.warn(` === Setup Error === \n\n${message}\n\n${outputLines.join('\n')}\n`);
-  } else {
-    console.warn(message, { stdoutLines: outputLines });
-  } 
 }
 
 export function Route(options?: { path?: string, method?: TRouteMethods }) {

@@ -1,4 +1,4 @@
-import { BaseController } from "../core/base-route.class";
+import { BaseController } from "../core/base-controller.class";
 import { RouteDecorator } from "../core/route-decorators.class";
 import { IRoute } from "../core/route.class";
 

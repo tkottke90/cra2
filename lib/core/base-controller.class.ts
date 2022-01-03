@@ -1,15 +1,15 @@
+import { ClassLogger } from './class-logger.class';
 import { Container } from 'typedi';
 import { ChildLogger, LoggerClass } from '@services/logger.service';
 import { Application, NextFunction, Request, Response, Router } from 'express';
 import { IRoute, IContext, IHook } from './route.class';
-import { GenericDictionary } from './dictionary.class';
 import _ from 'lodash';
 
 class RoutingError extends Error {
-  metadata: GenericDictionary;
+  metadata: Record<string, any>;
   code: number;
 
-  constructor(message: string, code: number, metadata: GenericDictionary) {
+  constructor(message: string, code: number, metadata: Record<string, any>) {
     super(message);
     this.name = 'RoutingError';
     this.code = code;
@@ -18,21 +18,20 @@ class RoutingError extends Error {
 
 }
 
-export class BaseController implements GenericDictionary {
+export abstract class BaseController implements Record<string, any> {
   public router: Router;
   public routeName: string;
   public paginate: boolean = false;
   readonly app: Application;
 
   routes!: IRoute[];
-  protected classLogger!: ChildLogger;
+
+  abstract logger: ClassLogger;
 
   constructor(app: Application, route: string, name: string) {
     this.router = Router();
     this.app = app;
     this.routeName = route.startsWith('/') ? route : `/${route}`;
-
-    this.configureLogger(name);
     
     let setupStatus = true;
     let setupMessage = 'Controller initialized';
@@ -43,15 +42,10 @@ export class BaseController implements GenericDictionary {
       setupStatus = false;
     }
 
-    this.classLogger.log(
+    this.logger.log(
       setupStatus ? 'info' : 'warn',
       setupMessage
     );
-  }
-  
-  protected configureLogger(className: string): void {
-    const logger = Container.get(LoggerClass);
-    this.classLogger = logger.createChildLogger(className);
   }
 
   protected setupRoutes(): void {
