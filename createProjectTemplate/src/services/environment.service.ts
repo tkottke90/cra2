@@ -1,4 +1,3 @@
-import { GenericDictionary } from '@classes/dictionary.class';
 import { Service } from 'typedi';
 
 enum MapPositions {
@@ -10,9 +9,9 @@ type EnvironmentErrorMethod = 'get' | 'set';
 
 class EnvironmentError extends Error {
   public method: EnvironmentErrorMethod;
-  public metadata: GenericDictionary;
+  public metadata: Record<string, any>;
   
-  constructor(message: string, method: EnvironmentErrorMethod, metadata: GenericDictionary = {}) {
+  constructor(message: string, method: EnvironmentErrorMethod, metadata: Record<string, any> = {}) {
     super(message);
 
     this.name = "EnvironmentError"
