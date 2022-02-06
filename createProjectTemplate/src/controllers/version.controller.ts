@@ -1,16 +1,18 @@
 import { Application } from 'express';
 import { BaseController } from "../../../lib/core/base-controller.class";
-import { Container } from 'typedi';
+import { Container, Inject } from 'typedi';
 import { PackageService } from '@services/package.service';
 import { Route } from '@classes/route.class';
+import { ClassLogger } from '@classes/class-logger.class';
 
 export class VersionController extends BaseController {
 
+  @Inject()
+  private loggerService: LoggerClass;
+
   private packageService: PackageService;
 
-  public classLogger: Console
-
-  constructor(app: Application) {
+  constructor(app: Application) {    
     super(app, 'version', 'Controller.VersionController');
 
     this.packageService = Container.get(PackageService);

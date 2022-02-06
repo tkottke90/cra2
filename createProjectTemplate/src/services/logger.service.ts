@@ -14,11 +14,6 @@ export interface ILoggerConfigurations {
   transports: string[];
 }
 
-interface ClassOptions {
-  silent?: boolean,
-  developmentMode: boolean
-}
-
 @Service()
 export class LoggerClass {
   private logger: Logger;
@@ -26,16 +21,16 @@ export class LoggerClass {
   
   public instanceName: string = 'App';
 
-  constructor(options: ClassOptions) {
+  constructor() {
     this.logger = createLogger({
       levels: this.generateLogLevels(Array.from(customList)),
       level: 'setup',
-      silent: options.silent || false,
+      silent: false,
       format: this.generateLogFormat(),
       transports: this.generateTransports()
     });
 
-    this.developmentMode = options.developmentMode;
+    this.developmentMode = process.env.NODE_ENV === 'development';
   }
 
   public createChildLogger(loggerName: string | string[]): ChildLogger {

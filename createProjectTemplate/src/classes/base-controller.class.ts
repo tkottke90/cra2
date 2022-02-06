@@ -4,7 +4,6 @@ import { ChildLogger, LoggerClass } from '@services/logger.service';
 import { Application, NextFunction, Request, Response, Router } from 'express';
 import { IRoute, IContext, IHook } from './route.class';
 import _ from 'lodash';
-import { LoggerClass } from '../../createProjectTemplate/src/services/logger.service';
 
 class RoutingError extends Error {
   metadata: Record<string, any>;
@@ -27,14 +26,13 @@ export abstract class BaseController implements Record<string, any> {
 
   routes!: IRoute[];
 
-  private logger: ClassLogger;
+  abstract logger: ClassLogger;
 
   constructor(app: Application, route: string, name: string) {
     this.router = Router();
     this.app = app;
     this.routeName = route.startsWith('/') ? route : `/${route}`;
-
-
+    
     let setupStatus = true;
     let setupMessage = 'Controller initialized';
     try {
@@ -48,11 +46,6 @@ export abstract class BaseController implements Record<string, any> {
       setupStatus ? 'info' : 'warn',
       setupMessage
     );
-  }
-
-  protected configureLogger(className: string): void {
-    const logger = Container.get(LoggerClass) as LoggerClass;
-    this.logger = logger.createChildLogger(className);
   }
 
   protected setupRoutes(): void {
@@ -69,11 +62,11 @@ export abstract class BaseController implements Record<string, any> {
     const controllerPath = route.path === '/' ? '' : route.path;
 
     if (!route.enabled) {
-      this.logger.log('setup', `Skipping Disabled HTTPEndpoint: ${route.method.toUpperCase()} ${this.routeName}${controllerPath}`)
+      this.classLogger.log('setup', `Skipping Disabled HTTPEndpoint: ${route.method.toUpperCase()} ${this.routeName}${controllerPath}`)
       return;
     }
     
-    this.logger.log('setup', `Configuring HTTPEndpoint: ${route.method.toUpperCase()} ${this.routeName}${controllerPath}`);
+    this.classLogger.log('setup', `Configuring HTTPEndpoint: ${route.method.toUpperCase()} ${this.routeName}${controllerPath}`);
     const classMethod = async (request: Request, response: Response, next: NextFunction) => {
       
       // Construct context object
@@ -187,7 +180,7 @@ export abstract class BaseController implements Record<string, any> {
       delete context.error.code;
       context.response.status(code).json(context.error);
     } catch (error: any) {
-      this.logger.log('error', `Error processing the error ${context.error.message} -> ${error.message}`, { originalError: context.error, ...error });
+      this.classLogger.log('error', `Error processing the error ${context.error.message} -> ${error.message}`, { originalError: context.error, ...error });
       context.response.status(500).json(error);
     }
   }
