@@ -1,6 +1,6 @@
-import { BaseController } from "../core/base-controller.class";
-import { RouteDecorator } from "../core/route-decorators.class";
-import { IRoute } from "../core/route.class";
+import { BaseController } from "../classes/base-controller.class";
+import { RouteDecorator } from "../classes/route-decorators.class";
+import { IRoute } from "../classes/route.class";
 
 interface Configuration {
   verificationFn?: (user: any) => boolean
