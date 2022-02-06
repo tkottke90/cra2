@@ -1,6 +1,6 @@
 import { ClassLogger } from './class-logger.class';
 import { Container } from 'typedi';
-import { ChildLogger, LoggerClass } from '@services/logger.service';
+import { LoggerClass } from '@services/logger.service';
 import { Application, NextFunction, Request, Response, Router } from 'express';
 import { IRoute, IContext, IHook } from './route.class';
 import _ from 'lodash';
@@ -26,7 +26,7 @@ export abstract class BaseController implements Record<string, any> {
 
   routes!: IRoute[];
 
-  abstract logger: ClassLogger;
+  protected classLogger: ClassLogger;
 
   constructor(app: Application, route: string, name: string) {
     this.router = Router();
@@ -42,7 +42,10 @@ export abstract class BaseController implements Record<string, any> {
       setupStatus = false;
     }
 
-    this.logger.log(
+    const logger = Container.get(LoggerClass);
+    this.classLogger = logger.createChildLogger(name);
+
+    this.classLogger.log(
       setupStatus ? 'info' : 'warn',
       setupMessage
     );
